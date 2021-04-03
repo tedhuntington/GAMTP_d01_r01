@@ -21,28 +21,31 @@ extern "C" {
 #include <hal_io.h>
 #include <hal_sleep.h>
 
-#include <hal_usart_async.h>
+#include <hal_adc_async.h>
 
 #include <hal_usart_sync.h>
 
 #include <hal_i2c_m_sync.h>
+#include <hal_usart_async.h>
+#include <hal_timer.h>
+#include <hpl_tc_base.h>
 #include <hal_timer.h>
 #include <hpl_tc_base.h>
 
 #include <hal_mac_async.h>
 
-extern struct usart_async_descriptor USART_1;
+extern struct adc_async_descriptor ADC_0;
 
 extern struct usart_sync_descriptor USART_0;
 
-extern struct i2c_m_sync_desc  I2C_0;
-extern struct timer_descriptor TIMER_0;
+extern struct i2c_m_sync_desc        I2C_0;
+extern struct usart_async_descriptor USART_1;
+extern struct timer_descriptor       TIMER_0;
+extern struct timer_descriptor       TIMER_1;
 
 extern struct mac_async_descriptor ETHERNET_MAC_0;
 
-void USART_1_PORT_init(void);
-void USART_1_CLOCK_init(void);
-void USART_1_init(void);
+void ADC_0_init(void);
 
 void USART_0_PORT_init(void);
 void USART_0_CLOCK_init(void);
@@ -51,6 +54,10 @@ void USART_0_init(void);
 void I2C_0_CLOCK_init(void);
 void I2C_0_init(void);
 void I2C_0_PORT_init(void);
+
+void USART_1_PORT_init(void);
+void USART_1_CLOCK_init(void);
+void USART_1_init(void);
 
 void ETHERNET_MAC_0_CLOCK_init(void);
 void ETHERNET_MAC_0_init(void);

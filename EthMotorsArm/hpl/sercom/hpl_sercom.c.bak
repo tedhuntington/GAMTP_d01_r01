@@ -163,7 +163,7 @@ static struct usart_configuration _usarts[] = {
 };
 #endif
 
-static struct _usart_async_device *_sercom6_dev = NULL;
+static struct _usart_async_device *_sercom0_dev = NULL;
 
 static uint8_t _get_sercom_index(const void *const hw);
 static uint8_t _sercom_get_irq_num(const void *const hw);
@@ -626,8 +626,8 @@ static uint8_t _get_sercom_index(const void *const hw)
 static void _sercom_init_irq_param(const void *const hw, void *dev)
 {
 
-	if (hw == SERCOM6) {
-		_sercom6_dev = (struct _usart_async_device *)dev;
+	if (hw == SERCOM0) {
+		_sercom0_dev = (struct _usart_async_device *)dev;
 	}
 }
 
@@ -1723,12 +1723,6 @@ static struct i2cs_configuration _i2css[] = {
 #if CONF_SERCOM_5_I2CS_ENABLE == 1
     I2CS_CONFIGURATION(5),
 #endif
-#if CONF_SERCOM_6_I2CS_ENABLE == 1
-    I2CS_CONFIGURATION(6),
-#endif
-#if CONF_SERCOM_7_I2CS_ENABLE == 1
-    I2CS_CONFIGURATION(7),
-#endif
 };
 #endif
 
@@ -1773,9 +1767,6 @@ int32_t _i2c_s_async_init(struct _i2c_s_async_device *const device, void *const 
 		NVIC_EnableIRQ((IRQn_Type)irq);
 		irq++;
 	}
-	// Enable Address Match and PREC interrupt by default.
-	hri_sercomi2cs_set_INTEN_AMATCH_bit(hw);
-	hri_sercomi2cs_set_INTEN_PREC_bit(hw);
 
 	return ERR_NONE;
 }
@@ -2403,30 +2394,30 @@ static inline const struct sercomspi_regs_cfg *_spi_get_regs(const uint32_t hw_a
 /**
  * \internal Sercom interrupt handler
  */
-void SERCOM6_0_Handler(void)
+void SERCOM0_0_Handler(void)
 {
-	_sercom_usart_interrupt_handler(_sercom6_dev);
+	_sercom_usart_interrupt_handler(_sercom0_dev);
 }
 /**
  * \internal Sercom interrupt handler
  */
-void SERCOM6_1_Handler(void)
+void SERCOM0_1_Handler(void)
 {
-	_sercom_usart_interrupt_handler(_sercom6_dev);
+	_sercom_usart_interrupt_handler(_sercom0_dev);
 }
 /**
  * \internal Sercom interrupt handler
  */
-void SERCOM6_2_Handler(void)
+void SERCOM0_2_Handler(void)
 {
-	_sercom_usart_interrupt_handler(_sercom6_dev);
+	_sercom_usart_interrupt_handler(_sercom0_dev);
 }
 /**
  * \internal Sercom interrupt handler
  */
-void SERCOM6_3_Handler(void)
+void SERCOM0_3_Handler(void)
 {
-	_sercom_usart_interrupt_handler(_sercom6_dev);
+	_sercom_usart_interrupt_handler(_sercom0_dev);
 }
 
 int32_t _spi_m_sync_init(struct _spi_m_sync_dev *dev, void *const hw)

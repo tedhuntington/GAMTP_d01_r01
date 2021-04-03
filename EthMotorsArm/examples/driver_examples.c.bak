@@ -10,6 +10,42 @@
 #include "driver_init.h"
 #include "utils.h"
 
+static void convert_cb_ADC_0(const struct adc_async_descriptor *const descr, const uint8_t channel)
+{
+}
+
+/**
+ * Example of using ADC_0 to generate waveform.
+ */
+void ADC_0_example(void)
+{
+	adc_async_enable_channel(&ADC_0, 0);
+	adc_async_register_callback(&ADC_0, 0, ADC_ASYNC_CONVERT_CB, convert_cb_ADC_0);
+	adc_async_start_conversion(&ADC_0);
+}
+
+/**
+ * Example of using USART_0 to write "Hello World" using the IO abstraction.
+ */
+void USART_0_example(void)
+{
+	struct io_descriptor *io;
+	usart_sync_get_io_descriptor(&USART_0, &io);
+	usart_sync_enable(&USART_0);
+
+	io_write(io, (uint8_t *)"Hello World!", 12);
+}
+
+void I2C_0_example(void)
+{
+	struct io_descriptor *I2C_0_io;
+
+	i2c_m_sync_get_io_descriptor(&I2C_0, &I2C_0_io);
+	i2c_m_sync_enable(&I2C_0);
+	i2c_m_sync_set_slaveaddr(&I2C_0, 0x12, I2C_M_SEVEN);
+	io_write(I2C_0_io, (uint8_t *)"Hello World!", 12);
+}
+
 /**
  * Example of using USART_1 to write "Hello World" using the IO abstraction.
  *
@@ -39,28 +75,6 @@ void USART_1_example(void)
 	io_write(io, example_USART_1, 12);
 }
 
-/**
- * Example of using USART_0 to write "Hello World" using the IO abstraction.
- */
-void USART_0_example(void)
-{
-	struct io_descriptor *io;
-	usart_sync_get_io_descriptor(&USART_0, &io);
-	usart_sync_enable(&USART_0);
-
-	io_write(io, (uint8_t *)"Hello World!", 12);
-}
-
-void I2C_0_example(void)
-{
-	struct io_descriptor *I2C_0_io;
-
-	i2c_m_sync_get_io_descriptor(&I2C_0, &I2C_0_io);
-	i2c_m_sync_enable(&I2C_0);
-	i2c_m_sync_set_slaveaddr(&I2C_0, 0x12, I2C_M_SEVEN);
-	io_write(I2C_0_io, (uint8_t *)"Hello World!", 12);
-}
-
 static struct timer_task TIMER_0_task1, TIMER_0_task2;
 
 /**
@@ -86,4 +100,31 @@ void TIMER_0_example(void)
 	timer_add_task(&TIMER_0, &TIMER_0_task1);
 	timer_add_task(&TIMER_0, &TIMER_0_task2);
 	timer_start(&TIMER_0);
+}
+
+static struct timer_task TIMER_1_task1, TIMER_1_task2;
+
+/**
+ * Example of using TIMER_1.
+ */
+static void TIMER_1_task1_cb(const struct timer_task *const timer_task)
+{
+}
+
+static void TIMER_1_task2_cb(const struct timer_task *const timer_task)
+{
+}
+
+void TIMER_1_example(void)
+{
+	TIMER_1_task1.interval = 100;
+	TIMER_1_task1.cb       = TIMER_1_task1_cb;
+	TIMER_1_task1.mode     = TIMER_TASK_REPEAT;
+	TIMER_1_task2.interval = 200;
+	TIMER_1_task2.cb       = TIMER_1_task2_cb;
+	TIMER_1_task2.mode     = TIMER_TASK_REPEAT;
+
+	timer_add_task(&TIMER_1, &TIMER_1_task1);
+	timer_add_task(&TIMER_1, &TIMER_1_task2);
+	timer_start(&TIMER_1);
 }
